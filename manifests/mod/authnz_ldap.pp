@@ -1,13 +1,13 @@
 class apache::mod::authnz_ldap (
-  $ldapDirectives = [ ],
+  $ldap_directives = [ ],
 ) {
   include 'apache::mod::ldap'
   apache::mod { 'authnz_ldap': }
 
   $newline = '
 '
-  validate_array($ldapDirectives)
-  $temp = join($ldapDirectives, $newline)
+  validate_array($ldap_directives)
+  $temp = join($ldap_directives, $newline)
   $directiveStr = "${temp}${newline}"
   validate_re($directiveStr, [ '^LDAP', '^$' ])
 
