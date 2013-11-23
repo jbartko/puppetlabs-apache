@@ -4,9 +4,11 @@ class apache::mod::authnz_ldap (
   include 'apache::mod::ldap'
   apache::mod { 'authnz_ldap': }
 
+  $newline = '
+'
   validate_array($ldapDirectives)
-  $directiveStr = join($ldapDirectives, '
-')
+  $temp = join($ldapDirectives, $newline)
+  $directiveStr = "${temp}${newline}"
   validate_re($directiveStr, [ '^LDAP', '^$' ])
 
   file { 'authnz_ldap.conf':
