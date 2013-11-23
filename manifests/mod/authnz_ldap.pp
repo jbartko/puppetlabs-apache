@@ -1,17 +1,18 @@
 class apache::mod::authnz_ldap (
-  $verifyServerCert = true,
+  $ldapDirectives = [ ],
 ) {
   include 'apache::mod::ldap'
   apache::mod { 'authnz_ldap': }
 
-  validate_bool($verifyServerCert)
+  validate_array($ldapDirectives)
+  $directiveStr = join($ldapDirectives, '
+')
+  validate_re($directiveStr, [ '^LDAP', '^$' ])
 
-  # Template uses:
-  # - $verifyServerCert
   file { 'authnz_ldap.conf':
     ensure  => file,
     path    => "${apache::mod_dir}/authnz_ldap.conf",
-    content => template('apache/mod/authnz_ldap.conf.erb'),
+    content => $directiveStr,
     require => Exec["mkdir ${apache::mod_dir}"],
     before  => File[$apache::mod_dir],
     notify  => Service['httpd'],
