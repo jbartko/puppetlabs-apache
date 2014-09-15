@@ -18,7 +18,7 @@ Checklist (and a short version for the impatient)
       number(s)), and should skip the full stop.
 
     - Associate the issue in the message. The first line should include
-			the issue number in the form "(#XXXX) Rest of message".
+      the issue number in the form "(#XXXX) Rest of message".
 
     - The body should provide a meaningful commit message, which:
 
@@ -31,8 +31,8 @@ Checklist (and a short version for the impatient)
     - Make sure that you have tests for the bug you are fixing, or
       feature you are adding.
 
-    - Make sure the test suites passe after your commit:
-      `rake spec spec:system` More information on [testing](#Testing) below
+    - Make sure the test suites passes after your commit:
+      `bundle exec rspec spec/acceptance` More information on [testing](#Testing) below
 
     - When introducing a new feature, make sure it is properly
       documented in the README.md
@@ -64,7 +64,7 @@ The long version
   1.  Make separate commits for logically separate changes.
 
       Please break your commits down into logically consistent units
-      which include new or changed tests relevent to the rest of the
+      which include new or changed tests relevant to the rest of the
       change.  The goal of doing this is to make the diff easier to
       read for whoever is reviewing your code.  In general, the easier
       your diff is to read, the more likely someone will be happy to
@@ -91,7 +91,7 @@ The long version
       includes them.
 
       Please also check that you are not introducing any trailing
-      whitespaces or other "whitespace errors".  You can do this by
+      whitespace or other "whitespace errors".  You can do this by
       running "git diff --check" on your changes before you commit.
 
   2.  Sign the Contributor License Agreement
@@ -129,7 +129,7 @@ The long version
       If there is a GitHub issue associated with the change you
       submitted, then you should update the ticket to include the
       location of your branch, along with any other commentary you
-			may wish to make.
+      may wish to make.
 
 Testing
 =======
@@ -162,7 +162,13 @@ Use `bundle show [gemname]` to see where a bundled gem is installed.
 
 NOTE some systems may require you to run this command with sudo.
 
-With all dependencies installed we can now run the tests:
+If you already have those gems installed, make sure they are up-to-date:
+
+```shell
+% bundle update
+```
+
+With all dependencies in place and up-to-date we can now run the tests:
 
 ```shell
 % rake spec
@@ -174,7 +180,7 @@ and so on. rspec tests may have the same kind of dependencies as the
 module they are testing. While the module defines in its [Modulefile](./Modulefile),
 rspec tests define them in [.fixtures.yml](./fixtures.yml).
 
-Some puppet modules also come with [rspec-system](https://github.com/puppetlabs/rspec-system)
+Some puppet modules also come with [beaker](https://github.com/puppetlabs/beaker)
 tests. These tests spin up a virtual machine under
 [VirtualBox](https://www.virtualbox.org/)) with, controlling it with
 [Vagrant](http://www.vagrantup.com/) to actually simulate scripted test
@@ -184,12 +190,13 @@ installed on your system.
 You can run them by issuing the following command
 
 ```shell
-% rake spec:system
+% rake spec_clean
+% rspec spec/acceptance
 ```
 
-This will now download a pre-fabricated image configured in [.nodeset.yml](./.nodeset.yml),
-install puppet, copy this module and install its dependencies per [spec/spec_helper_system.rb](./spec/spec_helper_system.rb)
-and then run all the tests under [spec/system](./spec/system).
+This will now download a pre-fabricated image configured in the [default node-set](./spec/acceptance/nodesets/default.yml),
+install puppet, copy this module and install its dependencies per [spec/spec_helper_acceptance.rb](./spec/spec_helper_acceptance.rb)
+and then run all the tests under [spec/acceptance](./spec/acceptance).
 
 Writing Tests
 -------------
@@ -216,8 +223,6 @@ Additional Resources
 * [Getting additional help](http://projects.puppetlabs.com/projects/puppet/wiki/Getting_Help)
 
 * [Writing tests](http://projects.puppetlabs.com/projects/puppet/wiki/Development_Writing_Tests)
-
-* [Bug tracker (Redmine)](http://projects.puppetlabs.com/projects/modules)
 
 * [Patchwork](https://patchwork.puppetlabs.com)
 

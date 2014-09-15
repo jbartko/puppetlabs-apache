@@ -1,8 +1,8 @@
 class apache::mod::authnz_ldap (
   $ldap_directives = [ ],
 ) {
-  include 'apache::mod::ldap'
-  apache::mod { 'authnz_ldap': }
+  include '::apache::mod::ldap'
+  ::apache::mod { 'authnz_ldap': }
 
   $newline = '
 '
@@ -13,10 +13,10 @@ class apache::mod::authnz_ldap (
 
   file { 'authnz_ldap.conf':
     ensure  => file,
-    path    => "${apache::mod_dir}/authnz_ldap.conf",
+    path    => "${::apache::mod_dir}/authnz_ldap.conf",
     content => $directiveStr,
-    require => Exec["mkdir ${apache::mod_dir}"],
-    before  => File[$apache::mod_dir],
+    require => Exec["mkdir ${::apache::mod_dir}"],
+    before  => File[$::apache::mod_dir],
     notify  => Service['httpd'],
   }
 }
